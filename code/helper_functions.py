@@ -107,17 +107,37 @@ def plot_roc(rocs,balanced=True):
     
 def correlation(dataset, threshold):
     '''checks the correlation of a dataframe'''
+    threshold_pos = threshold
+    threshold_neg = - threshold
+    pos, neg = 0, 0
+    deleted = []
     col_corr = set() # Set of all the names of deleted columns
     corr_matrix = dataset.corr()
+    print("before: ", dataset.shape)
     for i in range(len(corr_matrix.columns)):
         for j in range(i):
-            if (corr_matrix.iloc[i, j] >= threshold) and (corr_matrix.columns[j] not in col_corr):
+            if (corr_matrix.iloc[i, j] >= threshold_pos) and (corr_matrix.columns[j] not in col_corr):
+                
                 colname = corr_matrix.columns[i] # getting the name of column
                 col_corr.add(colname)
                 if colname in dataset.columns:
+                    pos+=1
+                    deleted.append(colname)
                     del dataset[colname] # deleting the column from the dataset
                     #dataset.drop(colname, axis=1)
-    return dataset
+            elif (corr_matrix.iloc[i, j] <= threshold_neg) and (corr_matrix.columns[j] not in col_corr):
+                colname = corr_matrix.columns[i] # getting the name of column
+                col_corr.add(colname)
+                if colname in dataset.columns:
+                    neg+=1
+                    deleted.append(colname)
+                    del dataset[colname] # deleting the column from the dataset
+                    #dataset.drop(colname, axis=1)
+    print("after: ", dataset.shape)
+    print("pos: {}\tneg: {}".format(pos,neg))
+    return dataset, deleted
+
+
 
 def plot_2d_space(X, y, label='Classes'): 
     '''plots x and y in a 2D-spae'''
