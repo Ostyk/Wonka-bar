@@ -26,6 +26,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_score
 from sklearn.metrics import classification_report, recall_score, f1_score
 from sklearn.metrics import roc_curve, auc
 from sklearn.preprocessing import StandardScaler
+from sklearn.feature_extraction import DictVectorizer
 
 import imblearn
 from sklearn.decomposition import PCA
@@ -243,3 +244,48 @@ def corr_heatmap(df):
     # Draw the heatmap with the mask and correct aspect ratio
     sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
                 square=True, linewidths=.5, cbar_kws={"shrink": .5})
+    
+def plot_days(df):
+    e = pd.concat([df['day'], df['GREEN']], axis=1)
+    day_1 = e['day'].iloc[0]
+    day_last = e['day'].iloc[-1]
+    october = dict()
+    for i in range(int(day_1), 31):
+        normal, green = e[e['day']==i]['GREEN'].value_counts()
+        #october.append([normal, green, i, 10])
+        october.update({str(i): {0:normal,1:green}})
+    november = dict()
+    for i in range(1, int(day_last+1)):
+        val = e[e['day']==i]['GREEN'].value_counts()
+        if len(val)>1:
+            november.update({str(i): {0:normal,1:green}})
+        else:
+            november.update({str(i): {0:normal,1:0}})
+    q1, q2 = pd.DataFrame(october).T, pd.DataFrame(november).T
+    q = pd.concat([q1,q2])
+    p = q.plot(kind='bar', figsize=(20,5), logy=True, fontsize=24)
+    p.set_xlabel("Days of production", fontsize=24)
+    p.set_ylabel("Number of bars", fontsize=24)
+    p.set_title("October to November comparision Wonka bars production $0 -$ normal, $1 -$green", fontsize=24)
+    p.legend(loc='best', bbox_to_anchor=(0.5, 1.05), ncol=3, fancybox=True, shadow=True, fontsize=24)
+    
+def data_processing(df):
+    use_time = True
+    if use_time:
+        to_vec=[]
+        for i in df['TIME']:
+            t = time.strptime(i, '%Y-%m-%d %H:%M:%S')
+            #print(t.tm_mon)
+            to_vec.append({"day": t.tm_mday,
+                           "dayWeek": t.tm_wday,
+                           "hour": t.tm_hour,
+                           "min": t.tm_min,
+                           "month": t.tm_mon,
+                           })
+
+        vec = DictVectorizer()
+        time_1 = vec.fit_transform(to_vec).toarray()
+        time_ = pd.DataFrame(time_1)
+        time_.columns = ['day', 'dayWeek', 'hour', 'min', 'month']
+        df = pd.concat([time_, df],  axis=1)
+    return df
