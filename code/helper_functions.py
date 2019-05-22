@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import time
 from uncertainties import unumpy
 import itertools
-
+import matplotlib.pyplot as plt
 plt.rcParams['text.usetex']=True
 plt.rcParams['text.latex.unicode']=True
 params = {'legend.fontsize': 'x-large',
@@ -105,6 +105,7 @@ def plot_roc(rocs,balanced=True):
     #plt.title('Receiver operating characteristic of the {} model'.format(mode_name))
     plt.legend(loc="lower right")
     plt.show()
+    plt.savefig("../report/figures/roc.pdf", bbox_inches = "tight")
     
 def correlation(dataset, threshold):
     '''checks the correlation of a dataframe'''
@@ -150,8 +151,9 @@ def plot_2d_space(X, y, label='Classes'):
             X[y==l, 1],
             c=c, label=l, marker=m
         )
-    plt.title(label)
-    plt.legend(loc='upper right')
+    plt.title(label, fontsize=20)
+    plt.legend(loc='upper right', fontsize=20)
+    plt.savefig("../report/figures/pca.pdf", bbox_inches = "tight")
     plt.show()
     
 def apply_oversampling(X_train, y_train, seed):
@@ -244,6 +246,7 @@ def corr_heatmap(df):
     # Draw the heatmap with the mask and correct aspect ratio
     sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
                 square=True, linewidths=.5, cbar_kws={"shrink": .5})
+    plt.savefig("../report/figures/correlation.pdf", bbox_inches = "tight")
     
 def plot_days(df):
     e = pd.concat([df['day'], df['GREEN']], axis=1)
@@ -268,6 +271,7 @@ def plot_days(df):
     p.set_ylabel("Number of bars", fontsize=24)
     p.set_title("October to November comparision Wonka bars production $0 -$ normal, $1 -$green", fontsize=24)
     p.legend(loc='best', bbox_to_anchor=(0.5, 1.05), ncol=3, fancybox=True, shadow=True, fontsize=24)
+    plt.savefig("../report/figures/data_overview.pdf", bbox_inches = "tight")
     
 def data_processing(df):
     use_time = True
@@ -289,3 +293,5 @@ def data_processing(df):
         time_.columns = ['day', 'dayWeek', 'hour', 'min', 'month']
         df = pd.concat([time_, df],  axis=1)
     return df
+
+
