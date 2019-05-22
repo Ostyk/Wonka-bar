@@ -78,10 +78,52 @@ linewidth=2pt % Width of the border lines around content boxes
 {\includegraphics[height=4em]{logo.png}} % Second university/lab logo on the right
 
 %----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\headerbox{Introduction}{name=conclusion,column=0,span=1,row=0}{
+
+\begin{multicols}{2}
+
+The goal of this was to bla bla\\
+The goal of this was to bla bla\\
+The goal of this was to bla bla\\
+The goal of this was to bla bla
+%------------------------------------------------
+
+The goal of this was to bla bla\\
+The goal of this was to bla bla\\
+The goal of this was to bla bla\\
+The goal of this was to bla bla
+
+
+\end{multicols}
+}
+
+%----------------------------------------------------------------------------------------
+%	OBJECTIVES
+%----------------------------------------------------------------------------------------
+
+\headerbox{Methodology}{name=methodology, column=1,span=1,row=0}{
+
+Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit, a cursus luctus. Nulla sit amet elit augue. Curabitur scelerisque mollis dolor, quis blandit lorem condimentum at. Pellentesque sed nibh vel \textbf{dolor} sagittis semper. 
+
+\begin{enumerate}\compresslist
+\item Feugiat vitae elit
+\item bibendum ante sed lacinia eros in
+\item Curabitur scelerisque arcu consequat varius
+\end{enumerate}
+
+%\vspace{0.3em} % When there are two boxes, some whitespace may need to be added if the one on the right has more content
+}
+
+
+
+%----------------------------------------------------------------------------------------
 %	DATASET
 %----------------------------------------------------------------------------------------
 
-\headerbox{Dataset}{name=results,column=0,span=2,row=0}{
+\headerbox{Dataset}{name=dataset,column=0,span=2,row=1, below=methodology}{
 
 \vspace{1em}
 \begin{center}
@@ -95,7 +137,7 @@ linewidth=2pt % Width of the border lines around content boxes
 
 
 \begin{center}
-\includegraphics[width=0.8\linewidth]{pca.pdf}
+\includegraphics[width=0.8\linewidth]{Imbalanced_dataset_(2_PCA_components)pca.pdf}
 \captionof{figure}{Normalised data with applied Principal Comonent Analysis  (PCA) dimensionality reduction. The plot shows that it is extreamly difficult  to distinguish between 0 (gold) and 1(green) bars only in 2 dimensions.}
 \end{center}
 
@@ -107,73 +149,12 @@ linewidth=2pt % Width of the border lines around content boxes
 \end{multicols}
 }
 
-%----------------------------------------------------------------------------------------
-%	OBJECTIVES
-%----------------------------------------------------------------------------------------
-
-\headerbox{Methodology}{name=objectives,column=2,row=0}{
-
-Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit cursus luctus. Nulla sit amet elit augue. Curabitur scelerisque mollis dolor, quis blandit lorem condimentum at. Pellentesque sed nibh vel \textbf{dolor} sagittis semper. 
-
-\begin{enumerate}\compresslist
-\item Feugiat vitae elit
-\item bibendum ante sed lacinia eros in
-\item Curabitur scelerisque arcu consequat varius
-\item Dapibus nulla id purus consectetur
-\item Fringilla integer 
-\end{enumerate}
-
-\vspace{0.3em} % When there are two boxes, some whitespace may need to be added if the one on the right has more content
-}
-
-%----------------------------------------------------------------------------------------
-%	INTRODUCTION
-%----------------------------------------------------------------------------------------
-
-\headerbox{Introduction}{name=introduction,column=3,row=0,bottomaligned=objectives}{
-
-Aliquam non lacus dolor, \textit{a aliquam quam}. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla in nibh mauris. Donec vel ligula nisi, a lacinia arcu. Sed mi dui, malesuada vel consectetur et, egestas porta nisi. Sed eleifend pharetra dolor, et dapibus est vulputate eu. \textbf{Integer faucibus elementum felis vitae fringilla.} In hac habitasse platea dictumst. Duis tristique rutrum nisl, nec vulputate elit porta ut. Donec sodales sollicitudin turpis sed convallis. Etiam mauris ligula, blandit adipiscing condimentum eu, dapibus pellentesque risus.
-}
-
-
-
-%----------------------------------------------------------------------------------------
-%	REFERENCES
-%----------------------------------------------------------------------------------------
-
-\headerbox{References}{name=references,column=0,above=bottom}{
-
-\renewcommand{\section}[2]{\vskip 0.05em} % Get rid of the default "References" section title
-\nocite{*} % Insert publications even if they are not cited in the poster
-\small{ % Reduce the font size in this block
-\bibliographystyle{unsrt}
-\bibliography{sample} % Use sample.bib as the bibliography file
-}}
-
-
-
-%----------------------------------------------------------------------------------------
-%	CONCLUSION
-%----------------------------------------------------------------------------------------
-
-\headerbox{Conclusion}{name=conclusion,column=0,span=2,row=0,below=results,above=references}{
-
-\begin{multicols}{2}
-
-ds
-
-%------------------------------------------------
-ds
-
-
-\end{multicols}
-}
 
 %----------------------------------------------------------------------------------------
 %	MATERIALS AND METHODS
 %----------------------------------------------------------------------------------------
 
-\headerbox{Training Pipeline}{name=method,column=2, span = 2, below=objectives,bottomaligned=conclusion}{ % This block's bottom aligns with the bottom of the conclusion block
+\headerbox{Training Pipeline}{name=training, row= 0, column=2, span = 2}{ % This block's bottom aligns with the bottom of the conclusion block
 \tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
 \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=7em, text centered, rounded corners, node distance=3cm, minimum height=4em]
 \tikzstyle{line} = [draw, -latex' ]
@@ -221,44 +202,58 @@ ds
 \end{tikzpicture}
 }
 
-%----------------------------------------------------------------------------------------
-%	RESULTS 2
-%----------------------------------------------------------------------------------------
-
-%\headerbox{Results 2}{name=results2,column=3,below=objectives,bottomaligned=conclusion}{ % This block's bottom aligns with the bottom of the conclusion block
-%
-%Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.
-%
-%\begin{center}
-%\begin{tabular}{l l l}
-%\toprule
-%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-%\midrule
-%Treatment 1 & 0.0003262 & 0.562 \\
-%Treatment 2 & 0.0015681 & 0.910 \\
-%Treatment 3 & 0.0009271 & 0.296 \\
-%\bottomrule
-%\end{tabular}
-%\captionof{table}{Table caption}
-%\end{center}
-%
-%Nulla ut porttitor enim. Suspendisse venenatis dui eget eros gravida tempor. Mauris feugiat elit et augue placerat ultrices. Morbi accumsan enim nec tortor consectetur non commodo.
-%
-%\begin{center}
-%\begin{tabular}{l l l}
-%\toprule
-%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-%\midrule
-%Treatment 1 & 0.0003262 & 0.562 \\
-%Treatment 2 & 0.0015681 & 0.910 \\
-%Treatment 3 & 0.0009271 & 0.296 \\
-%\bottomrule
-%\end{tabular}
-%\captionof{table}{Table caption}
-%\end{center}
-%}
 
 %----------------------------------------------------------------------------------------
+%	Results
+%----------------------------------------------------------------------------------------
+
+\headerbox{Results}{name=results,column=2, span=2, below=training}{ % This block's bottom aligns with the bottom of the conclusion block
+
+Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.
+
+\begin{center}
+\begin{tabular}{l l l l l}
+\toprule
+\textbf{Model Type} & \textbf{Accuracy} & \textbf{Response 2} & \textbf{Response 2} & \textbf{Response 2}\\
+\midrule
+Imblanced 1 & 0.0003262 & 0.562  & 0.562  & 0.562 \\
+Balanced 2 & 0.0015681 & 0.910  & 0.562  & 0.562 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{Table caption}
+\end{center}
+}
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	CONCLUSIONS
+%----------------------------------------------------------------------------------------
+
+\headerbox{Conclusions}{name=conclusions,column=2, span=2, below=results}{ % This block's bottom aligns with the bottom of the conclusion block
+
+Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.
+
+
+}
+%---
+
+
+
+%
+%%----------------------------------------------------------------------------------------
+%%	REFERENCES
+%%----------------------------------------------------------------------------------------
+%
+%\headerbox{References}{name=references,column=3,above=bottom}{
+%
+%\renewcommand{\section}[2]{\vskip 0.05em} % Get rid of the default "References" section title
+%\nocite{*} % Insert publications even if they are not cited in the poster
+%\small{ % Reduce the font size in this block
+%\bibliographystyle{unsrt}
+%\bibliography{sample} % Use sample.bib as the bibliography file
+%}}
+
+
 
 \end{poster}
 

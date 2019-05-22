@@ -151,9 +151,10 @@ def plot_2d_space(X, y, label='Classes'):
             X[y==l, 1],
             c=c, label=l, marker=m
         )
+    
     plt.title(label, fontsize=20)
     plt.legend(loc='upper right', fontsize=20)
-    plt.savefig("../report/figures/pca.pdf", bbox_inches = "tight")
+    plt.savefig("../report/figures/"+"_".join(label.split(" "))+"pca.pdf", bbox_inches = "tight")
     plt.show()
     
 def apply_oversampling(X_train, y_train, seed):
