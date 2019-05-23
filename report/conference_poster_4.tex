@@ -71,8 +71,7 @@ linewidth=2pt % Width of the border lines around content boxes
 %	TITLE SECTION 
 %----------------------------------------------------------------------------------------
 %
-{\includegraphics[height=4em]{loopq.png}} % First university/lab logo on the left
-%\caption{taken from \cite{ref:loopq}}
+{\includegraphics[height=4em]{loopq.png}}
 {\bf\textsc{Loop Q PRIZE Qualifying Challenge 2019}\vspace{0.1em}} % Poster title
 {\textsc{\{ Michal Ostyk-Narbutt \} \hspace{10pt} Sapienza University of Rome}} % Author names and institution
 {\includegraphics[height=4em]{loopq.png}} % Second university/lab logo on the right
@@ -111,8 +110,6 @@ The training pipeline(right), depicts the approach to the solution.  At first, a
 %------------------------------------------------
 
 \begin{multicols}{2}
-
-
 \begin{center}
 \includegraphics[width=0.8\linewidth]{Imbalanced_dataset_(2_PCA_components)pca.pdf}
 \captionof{figure}{Normalised data with applied PCA dimensionality reduction. The plot shows how extreamly difficult it is to distinguish between golden and green bars.}
@@ -142,7 +139,7 @@ Feature engineering involved of decomposing the time stamp into 5 columns : "day
 %\vspace{1em}
 \begin{center}
 \includegraphics[width=\linewidth]{data_overview.pdf}
-\captionof{figure}{Analysis of production of golden (0) and green(1) chocolate bars through the month of October to early November 2018}
+\captionof{figure}{Analysis of production of gold(0) and green(1) chocolate bars through October to early November 2018}
 \end{center}
 }
 
@@ -229,10 +226,8 @@ Best-hp $test$ macro average & 0.99 & 0.96  &    0.68      &0.76\\
 %----------------------------------------------------------------------------------------
 
 \headerbox{Conclusions}{name=conclusions,column=2, span=2, below=results}{ % This block's bottom aligns with the bottom of the conclusion block
-Random forests are great estimators when their is a significant amount of collinerity on an imbalanced dataset. However, reducing that collinerity and oversampling the training set, results in better overall performance. In this task however, we are largly concered with
-
-
-
+Random forests are great estimators when their is a significant amount of collinerity on an imbalanced dataset. However, reducing that collinerity and oversampling the training set, results in better overall performance. In this task however, we are largly concered with recall than precision. This is because, it is far more costly to wrongly predict a green bar as gold, rather than vice-versa and hence letting a green bar simply slip by. The percentage of green bars in the training dataset is $0.65 \%$ meanwhile, the percentage on the given test dataset predicted by the best model is just over 1 percent. Hence to conclude, I reckon that the model should yield good results once tested by the judges, as greens are rare as potrayed in Figure 2.\\
+Please note: logos in the top left and right belong to and were taken from <www.loopqprize.ai>
 }
 %---
 
