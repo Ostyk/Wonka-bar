@@ -73,31 +73,18 @@ linewidth=2pt % Width of the border lines around content boxes
 %
 {\includegraphics[height=4em]{loopq.png}} % First university/lab logo on the left
 %\caption{taken from \cite{ref:loopq}}
-{\bf\textsc{Loop Q PRIZE Qualifying Challenge 2019}\vspace{0.5em}} % Poster title
-{\textsc{\{ Michal Ostyk-Narbutt \} \hspace{12pt} Sapienza University of Rome}} % Author names and institution
-{\includegraphics[height=4em]{logo.png}} % Second university/lab logo on the right
+{\bf\textsc{Loop Q PRIZE Qualifying Challenge 2019}\vspace{0.1em}} % Poster title
+{\textsc{\{ Michal Ostyk-Narbutt \} \hspace{10pt} Sapienza University of Rome}} % Author names and institution
+{\includegraphics[height=4em]{loopq.png}} % Second university/lab logo on the right
 
 %----------------------------------------------------------------------------------------
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 
 \headerbox{Introduction}{name=conclusion,column=0,span=1,row=0}{
+The Willy Wonka chocolate factory produces the \textbf{Golden Scrumpilicious Candy Bar}, which packaged in a golden wrapper. However, sometimes during production the bars end up being green which is a defect, but also very alluring and well selling.\\ Given data from the production line from 60 Oompa-Loompa's, the goal is to predict the production of the \textbf{green bars}. \\
+In this presentation I will go over the overview of the solution, its design criteria, and its strengths. 
 
-\begin{multicols}{2}
-
-The goal of this was to bla bla\\
-The goal of this was to bla bla\\
-The goal of this was to bla bla\\
-The goal of this was to bla bla
-%------------------------------------------------
-
-The goal of this was to bla bla\\
-The goal of this was to bla bla\\
-The goal of this was to bla bla\\
-The goal of this was to bla bla
-
-
-\end{multicols}
 }
 
 %----------------------------------------------------------------------------------------
@@ -105,14 +92,9 @@ The goal of this was to bla bla
 %----------------------------------------------------------------------------------------
 
 \headerbox{Methodology}{name=methodology, column=1,span=1,row=0}{
+The training pipeline(right), depicts the approach to the solution.  At first, an SVM model was applied to the imbalanced data, but seeing that data is hard to marginalise in Figure \ref{pca}, it gave really poor results. Hence,  Random forests (RF) were used since model architecture reduces overfitting  However, to improve results oversampling using SMOTE was peformed. RF precision and recall gave better results on a balanaced dataset. Note that in cross-validation (CV) with oversampling, only the training fold was oversampled.
 
-Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit, a cursus luctus. Nulla sit amet elit augue. Curabitur scelerisque mollis dolor, quis blandit lorem condimentum at. Pellentesque sed nibh vel \textbf{dolor} sagittis semper. 
 
-\begin{enumerate}\compresslist
-\item Feugiat vitae elit
-\item bibendum ante sed lacinia eros in
-\item Curabitur scelerisque arcu consequat varius
-\end{enumerate}
 
 %\vspace{0.3em} % When there are two boxes, some whitespace may need to be added if the one on the right has more content
 }
@@ -125,11 +107,6 @@ Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit, a cursus luctus. 
 
 \headerbox{Dataset}{name=dataset,column=0,span=2,row=1, below=methodology}{
 
-\vspace{1em}
-\begin{center}
-\includegraphics[width=\linewidth]{data_overview.pdf}
-\captionof{figure}{Analysis of production of golden (0) and green(1) chocolate bars through the month of October to early November 2018}
-\end{center}
 
 %------------------------------------------------
 
@@ -138,15 +115,35 @@ Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit, a cursus luctus. 
 
 \begin{center}
 \includegraphics[width=0.8\linewidth]{Imbalanced_dataset_(2_PCA_components)pca.pdf}
-\captionof{figure}{Normalised data with applied Principal Comonent Analysis  (PCA) dimensionality reduction. The plot shows that it is extreamly difficult  to distinguish between 0 (gold) and 1(green) bars only in 2 dimensions.}
+\captionof{figure}{Normalised data with applied PCA dimensionality reduction. The plot shows how extreamly difficult it is to distinguish between golden and green bars.}
+\label{pca}
 \end{center}
 
+%\begin{center}
+%\includegraphics[width=0.8\linewidth]{correlation.pdf}
+%\captionof{figure}{Correlation matrix after removing correlated features with lower and upper bound threshold equal to -0.31, and 0.31 respectively}
+%\end{center}
+%------------------------------------------------
+The dataset given consits of 62 columns, of which 60 are scalar features given by each Oompa-Loompa, 1 is a time stamp, and the last is the target 'GREEN'. This task will consist of binary classification. However, the data is immensely imbalanced as green bar production is very rare.
 \begin{center}
-\includegraphics[width=0.8\linewidth]{correlation.pdf}
-\captionof{figure}{Correlation matrix after removing correlated features with lower and upper bound threshold equal to -0.31, and 0.31 respectively}
+\begin{tabular}{l l}
+\toprule
+\textbf{Golden bars} & \textbf{Green bars} \\
+\midrule
+15704 & 102 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{Gold vs Green bars in dataset}
 \end{center}
-
+Feature engineering involved of decomposing the time stamp into 5 columns : "day", "dayWeek", "hour", "min", "month". Moreover, Features correlated with each other by a threshold $t=\pm 0.32$  were discarded. Hence, the training  and testing was done on 22 features.
 \end{multicols}
+
+
+%\vspace{1em}
+\begin{center}
+\includegraphics[width=\linewidth]{data_overview.pdf}
+\captionof{figure}{Analysis of production of golden (0) and green(1) chocolate bars through the month of October to early November 2018}
+\end{center}
 }
 
 
@@ -208,19 +205,21 @@ Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit, a cursus luctus. 
 %----------------------------------------------------------------------------------------
 
 \headerbox{Results}{name=results,column=2, span=2, below=training}{ % This block's bottom aligns with the bottom of the conclusion block
-
-Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.
+The training consisted of a grid-search K-fold cross validation to find the best hyperparameters (Best-hp). Seeing that balanced data gave better results (Table 2), and using their Best-hp, training was performed on the entire dataset split into: train, validation, and test. Only train was oversampled.
 
 \begin{center}
 \begin{tabular}{l l l l l}
 \toprule
-\textbf{Model Type} & \textbf{Accuracy} & \textbf{Response 2} & \textbf{Response 2} & \textbf{Response 2}\\
+\textbf{Model Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}\\
 \midrule
-Imblanced 1 & 0.0003262 & 0.562  & 0.562  & 0.562 \\
-Balanced 2 & 0.0015681 & 0.910  & 0.562  & 0.562 \\
+CV Imblanced RF & 0.9960$\pm$0.0006 & 0.91$\pm$0.05 & 0.41$\pm$0.08 & 0.9952$\pm$0.0008\\
+CV Balanced RF  &  0.9947$\pm$0.0011 & 0.67$\pm$0.18 & 0.402$\pm$0.017 & 0.9941$\pm$0.0009\\
+Best-hp $validation$ macro average & 0.99 & 1    & 0.75    &   0.83\\
+Best-hp $test$ macro average & 0.99 & 0.96  &    0.68      &0.76\\
 \bottomrule
 \end{tabular}
-\captionof{table}{Table caption}
+\label{res}
+\captionof{table}{End results of training on balanced and imbalanced datasets $+$ final training on the best hyperparamters.}
 \end{center}
 }
 %----------------------------------------------------------------------------------------
@@ -230,8 +229,8 @@ Balanced 2 & 0.0015681 & 0.910  & 0.562  & 0.562 \\
 %----------------------------------------------------------------------------------------
 
 \headerbox{Conclusions}{name=conclusions,column=2, span=2, below=results}{ % This block's bottom aligns with the bottom of the conclusion block
+Random forests are great estimators when their is a significant amount of collinerity on an imbalanced dataset. However, reducing that collinerity and oversampling the training set, results in better overall performance. In this task however, we are largly concered with
 
-Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.
 
 
 }
