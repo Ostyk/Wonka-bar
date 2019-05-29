@@ -46,7 +46,7 @@ def standardize_data(X):
     sc = StandardScaler()
     fitted = sc.fit(X)
     return sc.transform(X)
-    X = standardize_data(X)
+    
 
 def clssifier_type(X_train, X_test,y_train, y_test, p1=None, p2=None, classifier='SVM'):
     ''' Cross validation of different alogirthms
@@ -142,8 +142,8 @@ def correlation(dataset, threshold):
 
 
 def plot_2d_space(X, y, label='Classes'): 
-    '''plots x and y in a 2D-spae'''
-    colors = ['#1F77B4', '#FF7F0E']
+    '''plots x and y in a 2D-space'''
+    colors = ['goldenrod', 'green']
     markers = ['o', 's']
     for l, c, m in zip(np.unique(y), colors, markers):
         plt.scatter(
@@ -191,11 +191,10 @@ def model(X, y, n_splits=5, seed = 42, model_name='SVM', over_sampling = False):
 
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
-
+            X_train, X_test = scale_set(X_train,X_test)
             if over_sampling:
                 X_train, y_train = apply_oversampling(X_train, y_train, seed)
-          
-            X_train, X_test = scale_set(X_train,X_test)
+            
 
             #metrics calcs
             performance, roc = clssifier_type(X_train, X_test, y_train, y_test, p1, p2, classifier=model_name)
@@ -208,7 +207,7 @@ def model(X, y, n_splits=5, seed = 42, model_name='SVM', over_sampling = False):
 
         permuation_performance = empty.mean() #mean of scores for all CVs
 
-        if np.array([permuation_performance['f1-score']])>=np.array([baseline['f1-score']]): #maximizing f1 score
+        if np.array([permuation_performance['recall']])>=np.array([baseline['recall']]): #maximizing f1 score
             baseline = pd.DataFrame(unumpy.uarray(permuation_performance, empty.std())).T
 
             baseline.columns = ['accuracy','recall','precision','f1-score']
@@ -267,7 +266,7 @@ def plot_days(df):
             november.update({str(i): {0:normal,1:0}})
     q1, q2 = pd.DataFrame(october).T, pd.DataFrame(november).T
     q = pd.concat([q1,q2])
-    p = q.plot(kind='bar', figsize=(20,5), logy=True, fontsize=24)
+    p = q.plot(kind='bar', figsize=(20,5), logy=True, fontsize=24, colors = ('goldenrod', 'green'))
     p.set_xlabel("Days of production", fontsize=24)
     p.set_ylabel("Number of bars", fontsize=24)
     p.set_title("October to November comparision Wonka bars production $0 -$ normal, $1 -$green", fontsize=24)

@@ -61,7 +61,7 @@ headerFontColor=white, % Text color for the header text in the content boxes
 boxColorOne=white, % Background color of the content boxes
 textborder=roundedleft, % Format of the border around content boxes, can be: none, bars, coils, triangles, rectangle, rounded, roundedsmall, roundedright or faded
 eyecatcher=true, % Set to false for ignoring the left logo in the title and move the title left
-headerheight=0.1\textheight, % Height of the header
+headerheight=0.08\textheight, % Height of the header
 headershape=roundedright, % Specify the rounded corner in the content box headers, can be: rectangle, small-rounded, roundedright, roundedleft or rounded
 headerfont=\Large\bf\textsc, % Large, bold and sans serif font in the headers of content boxes
 %textfont={\setlength{\parindent}{1.5em}}, % Uncomment for paragraph indentation
@@ -91,7 +91,7 @@ In this presentation I will go over the overview of the solution, its design cri
 %----------------------------------------------------------------------------------------
 
 \headerbox{Methodology}{name=methodology, column=1,span=1,row=0}{
-The training pipeline(right), depicts the approach to the solution.  At first, an SVM model was applied to the imbalanced data, but seeing that data is hard to marginalise in Figure \ref{pca}, it gave really poor results. Hence,  Random forests (RF) were used since model architecture reduces overfitting  However, to improve results oversampling using SMOTE was peformed. RF precision and recall gave better results on a balanaced dataset. Note that in cross-validation (CV) with oversampling, only the training fold was oversampled.
+The training pipeline(right), depicts the approach to the solution.  At first, an SVM model was applied to the imbalanced data, but seeing that data is hard to marginalise in Figure \ref{pca}, it gave really poor results. Hence,  Random forests (RF) were used since model architecture reduces overfitting  However, to improve results oversampling using SMOTE was peformed to balance the data. Then using the best hyperparameters, the models were trained imbalanced and balanced. However, due to  better recall, the balanced version was selected as the one to be used on the unknown test data set.
 
 
 
@@ -191,7 +191,7 @@ Feature engineering involved of decomposing the time stamp into 5 columns : "day
 \path [line] (init) -- (drop);
 \path [line] (drop) -- (CV);
 \path [line, dashed] (train) -- (init);
-\path [line, dashed] (test) -- (drop);
+\path [line, dashed] (test) -- (init);
 \path [line, dashed] (drop) -| (test);
 \end{tikzpicture}
 }
@@ -202,22 +202,26 @@ Feature engineering involved of decomposing the time stamp into 5 columns : "day
 %----------------------------------------------------------------------------------------
 
 \headerbox{Results}{name=results,column=2, span=2, below=training}{ % This block's bottom aligns with the bottom of the conclusion block
-The training consisted of a grid-search K-fold cross validation to find the best hyperparameters (Best-hp). Seeing that balanced data gave better results (Table 2), and using their Best-hp, training was performed on the entire dataset split into: train, validation, and test. Only train was oversampled.
+
+\begin{multicols}{2}
+First 5-fold cross-validation grid search, maximizing recall was performed to find the best hyperparameters (Best-hp). Despite the imbalanced $Imb$  dataset showing better performance on cross-validation. When ran using the Best-hp on the  entire dataset split into: train, validation, and test, the balanced $Bal$ (oversampled) model performs much better. In fact, recall on the test set is $39\%$ higher on the Best-hp balanced version than the imbalanced.
 
 \begin{center}
 \begin{tabular}{l l l l l}
 \toprule
-\textbf{Model Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}\\
+\textbf{Model Type} & \textbf{Precision} & \textbf{Recall}\\
 \midrule
-CV Imblanced RF & 0.9960$\pm$0.0006 & 0.91$\pm$0.05 & 0.41$\pm$0.08 & 0.9952$\pm$0.0008\\
-CV Balanced RF  &  0.9947$\pm$0.0011 & 0.67$\pm$0.18 & 0.402$\pm$0.017 & 0.9941$\pm$0.0009\\
-Best-hp $validation$ macro average & 0.99 & 1    & 0.75    &   0.83\\
-Best-hp $test$ macro average & 0.99 & 0.96  &    0.68      &0.76\\
+CV $Bal$ RF  & 0.86$\pm$0.12 &	0.39$\pm$0.13 \\
+CV $Imb$ RF   &	0.67$\pm$0.06 &	0.49$\pm$0.13\\
+Best-hp $Bal$ $test$   & 0.67  & 0.93   \\
+Best-hp $Imb$  $test$  &    0.82  & 0.54 \\
 \bottomrule
 \end{tabular}
 \label{res}
-\captionof{table}{End results of training on balanced and imbalanced datasets $+$ final training on the best hyperparamters.}
+\captionof{table}{End results of training on balanced $Bal$ and imbalanced $Imb$ datasets $+$ final training on the best hyperparamters.}
 \end{center}
+
+\end{multicols}
 }
 %----------------------------------------------------------------------------------------
 
@@ -226,8 +230,7 @@ Best-hp $test$ macro average & 0.99 & 0.96  &    0.68      &0.76\\
 %----------------------------------------------------------------------------------------
 
 \headerbox{Conclusions}{name=conclusions,column=2, span=2, below=results}{ % This block's bottom aligns with the bottom of the conclusion block
-Random forests are great estimators when their is a significant amount of collinerity on an imbalanced dataset. However, reducing that collinerity and oversampling the training set, results in better overall performance. In this task however, we are largly concered with recall than precision. This is because, it is far more costly to wrongly predict a green bar as gold, rather than vice-versa and hence letting a green bar simply slip by. The percentage of green bars in the training dataset is $0.65 \%$ meanwhile, the percentage on the given test dataset predicted by the best model is just over 1 percent. Hence to conclude, I reckon that the model should yield good results once tested by the judges, as greens are rare as potrayed in Figure 2.\\
-Please note: logos in the top left and right belong to and were taken from <www.loopqprize.ai>
+Random forests are great estimators despite when collinerity is relatively high on an imbalanced dataset. However, reducing that collinerity and oversampling the training set, results in better overall performance. In this task however, we are largly concered with recall than precision. This is because, it is far more costly to wrongly predict a green bar as gold, rather than vice-versa and hence letting a green bar simply slip by. The percentage of green bars in the training dataset is $0.65 \%$ meanwhile, the percentage on the given test dataset predicted by the best model is just under 5 percent. Hence to conclude, I reckon that the model should yield good results once tested by the judges, as greens are rare as but the testing sample may slightly different.  Another interesting fact was that, training without the use of a feature timestamp yielded awfully poor results with recall $<10\%$. As Figure 2 potrays, some days just produce more green bars. Please note: logos in the top left and right belong to and were taken from <www.loopqprize.ai>
 }
 %---
 
